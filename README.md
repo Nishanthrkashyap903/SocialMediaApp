@@ -21,5 +21,5 @@ Welcome to the Social Media App! This project is a social networking application
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/Nishanthrkashyap903/SocialMediaApp.git
-   cd social-media-app
+   
 
