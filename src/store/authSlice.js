@@ -19,7 +19,6 @@ const authSlice=createSlice(
                 state.userData=null;
             }
         }
-
     }
 )
 

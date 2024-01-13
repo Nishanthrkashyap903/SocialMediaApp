@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
     name:null,
     email:null,
-    status:false
+    status:false,
+    profileImage: false,
 }
 
 const profileSlice=createSlice({
@@ -16,12 +17,15 @@ const profileSlice=createSlice({
             state.status=true
         },
         removeProfile:(state,action)=>{
-            state.email=null,
-            state.name=null,
+            state.email=null;
+            state.name=null;
             state.status=false
+        },
+        addProfileImage:(state,action)=>{
+            state.profileImage=true;
         }
     }
 })
 
-export const {addProfile,removeProfile}=profileSlice.actions;
+export const {addProfile,removeProfile,addProfileImage}=profileSlice.actions;
 export default profileSlice.reducer;

@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import { Provider } from 'react-redux'
 import store from './store/store'
 import {AuthStatus,SignIn,SignUp} from './components/index'
+import EditProfile from "./components/EditProfile"
 
 //TODO: AuthLayout make sure that once the user 
 
@@ -37,6 +38,10 @@ const router=createBrowserRouter([
       {
         path:'/home/profile',
         element:<Profile className='w-full'/>
+      },
+      {
+        path:'/home/edit-profile',
+        element: <EditProfile />
       }
     ]
   }

@@ -11,7 +11,7 @@ function Home() {
   useEffect(() => {
     appWriteService.getUser().then((user) => {
       if (user) {
-        console.log(user);
+        console.log("user in home",user);
         //* {name:  ,email: }
         dispatch(addProfile(user));
       }

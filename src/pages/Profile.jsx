@@ -1,22 +1,43 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate, Link } from 'react-router-dom'
 
 function Profile({ className, ...props }) {
 
-  const profile=useSelector((state)=>state.profile)
+  const profile = useSelector((state) => state.profile)
+
+  // console.log("is Profile Image", profile.profileImage);
+
+  const navigate = useNavigate();
 
   return (
     <div className={`${className} flex items-start justify-center`}>
-      <div className="flex flex-col items-center space-x-2">
-        <img
-          className="inline-block h-1/4 w-3/12 rounded-full "
-          src="https://rapidkings.com/wp-content/uploads/2023/05/17kohli1.jpg"
-          alt="Profile-image"
-        />
+      <div className="flex flex-col items-center space-x-2 w-3/4 h-3/4">
+        {
+          profile.profileImage ? (
+            <img
+              className="inline-block h-1/4 w-3/12 rounded-full "
+              src="https://rapidkings.com/wp-content/uploads/2023/05/17kohli1.jpg"
+              alt="Profile-image"
+            />
+          ) :
+            (
+              <div className="flex mt-10 justify-center items-center h-1/3 w-1/4 rounded-full bg-purple-600">
+                <p className=" h-1/4  text-5xl  text-white font-semibold ">
+                  {profile.name[0].toUpperCase()}
+                </p>
+              </div>
+            )
+        }
+
         <span className="flex flex-col">
-          <span className=" text-lg font-medium text-gray-900 text-center">{profile.name}</span>
+          <span className=" mt-10 text-lg font-medium text-gray-900 text-center">{profile.name}</span>
           <span className="text-lg font-medium text-gray-500 text-center">{profile.email}</span>
         </span>
+
+        <Link to="/home/edit-profile">
+          <button className="mt-5 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Edit Profile</button>
+        </Link>
       </div>
 
     </div>
