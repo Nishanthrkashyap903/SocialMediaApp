@@ -2,14 +2,18 @@ import React from 'react'
 import { FileUp } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import Input from './Input'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector, } from 'react-redux'
 import Button, {} from './Button'
 import service from '../appwrite/config.js'
+import { useNavigate } from 'react-router-dom'
+import { updateProfile } from '../store/profileSlice.js'
 
 function EditProfile() {
 
   const userData = useSelector((state) => state.profile);
   const authUser=useSelector((state)=>state.auth);
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
   
   const { register, handleSubmit } = useForm({
     defaultValues:{
@@ -29,17 +33,36 @@ function EditProfile() {
 
     //*file: {$id: imageID,...} 
 
-    //TODO:   
 
     if(file) 
     {
-      const dbPost=await service.createProfilePost({
-        UserId: authUser.userData.$id,
-        ProfileImageId: file.$id,
-        Name: data.name,
-        EmailId: data.email,
-      })
-      console.log(dbPost);
+
+      const getDocuments=await service.getProfilePosts({name: "UserId",value: authUser.userData.userId})
+
+      console.log(getDocuments);
+      //{documents:[{$id: documentId}]}
+
+      if(getDocuments && getDocuments.total===0)
+      {
+        const dbPost=await service.createProfilePost({
+          UserId: authUser.userData.userId,
+          ProfileImageId: file.$id,
+          Name: data.name,
+          EmailId: data.email,
+        })
+        console.log(dbPost);
+      }
+      else{
+        if(!getDocuments) return ;
+        else {
+          console.log('update');
+          const updateDocuments=await service.updateProfilePosts({documentId:getDocuments.documents[0].$id,ProfileImageId:file.$id,Name: data.name})
+          console.log(updateDocuments);
+          dispatch(updateProfile(updateDocuments));
+          
+        }
+      }
+      navigate('/home/profile');
     }
   }
 

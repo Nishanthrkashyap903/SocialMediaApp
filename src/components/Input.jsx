@@ -1,4 +1,4 @@
-//TODO: Create a new component
+
 
 import React from 'react'
 

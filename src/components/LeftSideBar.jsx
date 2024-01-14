@@ -1,17 +1,17 @@
 import { useNavigate, } from "react-router-dom"
 import TopIcon from "./TopIcon";
-import { Home, Mail, UserCircle2, LogOut} from 'lucide-react';
-import { useSelector,useDispatch } from "react-redux";
+import { Home, Mail, UserCircle2, LogOut } from 'lucide-react';
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import { removeProfile } from "../store/profileSlice";
-import { useEffect } from "react";
 import authService from "../appwrite/auth";
+import service from "../appwrite/config";
 
 function LeftSideBar() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector((state) => state.profile);
-  const dispatch=useDispatch();
 
   // console.log(userData);
 
@@ -39,8 +39,8 @@ function LeftSideBar() {
     ,
   ]
 
-  const logoutHandler=()=>{
-    authService.logout().then((status)=>{
+  const logoutHandler = () => {
+    authService.logout().then((status) => {
       console.log(status);
       dispatch(logout())
       dispatch(removeProfile());
@@ -81,17 +81,18 @@ function LeftSideBar() {
           </div>
 
           <div className="flex items-center space-x-5 ">
-            {/* <img
-              className="inline-block h-20 w-20 rounded-full"
-              src="https://rapidkings.com/wp-content/uploads/2023/05/17kohli1.jpg"
-              alt="Profile-pic"
-            /> */}
+            {userData.profileImage ?
+              (<img
+                className="inline-block h-20 w-20 rounded-full"
+                src={service.getProfileImagePreview(userData.profileImageID)}
+                alt="Profile-pic"
+              />) :
 
-            <div className="flex justify-center items-center h-20 w-20 rounded-full bg-purple-600">
-              <p className=" h-1/2 text-3xl text-white font-semibold ">
-                {userData.name ? userData.name[0].toUpperCase() : " "}
-              </p>
-            </div>
+              (<div className="flex justify-center items-center h-20 w-20 rounded-full bg-purple-600">
+                <p className=" h-1/2 text-3xl text-white font-semibold ">
+                  {userData.name ? userData.name[0].toUpperCase() : " "}
+                </p>
+              </div>)}
             <span className="flex flex-col">
               <span className="text-1xl font-medium text-gray-900 l">{userData.name}</span>
               <span className="text-1xl font-medium text-gray-500">{userData.email}</span>

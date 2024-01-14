@@ -1,4 +1,4 @@
-import { Client, ID, Storage, Databases } from "appwrite";
+import { Client, ID, Storage, Databases, Query } from "appwrite";
 import conf from "../conf/conf.js";
 
 export class Service {
@@ -49,7 +49,9 @@ export class Service {
 
     async createProfilePost({UserId,ProfileImageId,Name,EmailId}){
         try {
-            return await this.database.createDocument(conf.appWriteDatabaseId,conf.appWriteProfilePostsCollectionId, ID.unique(), {
+            return await this.database.createDocument(conf.appWriteDatabaseId,
+                conf.appWriteProfilePostsCollectionId, 
+                ID.unique(), {
                 UserId,
                 ProfileImageId,
                 Name,
@@ -60,6 +62,35 @@ export class Service {
         }
     }
 
+    async getProfilePosts({
+        name,
+        value,
+    }){
+        try {
+            return await this.database.listDocuments(conf.appWriteDatabaseId,
+                conf.appWriteProfilePostsCollectionId,[Query.equal(name,[value])]
+                )
+        } catch (error) {
+            console.log("Appwrite server :: getProfilePost :: error", error);
+            return false;
+        }
+    }
+
+    async updateProfilePosts({documentId,ProfileImageId,Name}){
+        try {
+            return await this.database.updateDocument(conf.appWriteDatabaseId,conf.appWriteProfilePostsCollectionId,documentId,{
+                ProfileImageId,
+                Name,
+            }) 
+        } catch (error) {
+            console.log("Appwrite server :: updateProfilePosts :: error", error);
+            return false;
+        }
+    }
+
+    getProfileImagePreview(ProfileImageID){
+        return this.storage.getFilePreview(conf.appWriteBucketId,ProfileImageID);
+    }
 }
 
 const service = new Service();

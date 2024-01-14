@@ -11,7 +11,7 @@ import store from './store/store'
 import {AuthStatus,SignIn,SignUp} from './components/index'
 import EditProfile from "./components/EditProfile"
 
-//TODO: AuthLayout make sure that once the user 
+// AuthLayout make sure that once the user 
 
 const router=createBrowserRouter([
   {

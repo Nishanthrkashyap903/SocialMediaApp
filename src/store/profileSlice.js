@@ -5,6 +5,7 @@ const initialState={
     email:null,
     status:false,
     profileImage: false,
+    profileImageID:null
 }
 
 const profileSlice=createSlice({
@@ -23,9 +24,13 @@ const profileSlice=createSlice({
         },
         addProfileImage:(state,action)=>{
             state.profileImage=true;
+            state.profileImageID=action.payload.ProfileImageId;
+        },
+        updateProfile:(state,action)=>{
+            state.name=action.payload.Name;
         }
     }
 })
 
-export const {addProfile,removeProfile,addProfileImage}=profileSlice.actions;
+export const {addProfile,removeProfile,addProfileImage,updateProfile}=profileSlice.actions;
 export default profileSlice.reducer;

@@ -1,23 +1,35 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
+import {addProfileImage, updateProfile} from '../store/profileSlice.js'
+import service from '../appwrite/config'
 
 function Profile({ className, ...props }) {
-
-  const profile = useSelector((state) => state.profile)
-
-  // console.log("is Profile Image", profile.profileImage);
-
   const navigate = useNavigate();
+  const authData=useSelector((state)=>state.auth);
+  const dispatch=useDispatch();
+  
+  useEffect(()=>{
+    async function fetchData (){
+      const getDocuments=await service.getProfilePosts({name:"UserId",value:authData.userData.userId});
+      console.log('leftSideBar:',getDocuments);
+      dispatch(addProfileImage(getDocuments.documents[0]))
+      dispatch(updateProfile(getDocuments.documents[0]));
+    } 
+    
+    fetchData();
+  },[navigate])
 
+  const profile = useSelector((state) => state.profile);
+  
   return (
     <div className={`${className} flex items-start justify-center`}>
       <div className="flex flex-col items-center space-x-2 w-3/4 h-3/4">
         {
           profile.profileImage ? (
             <img
-              className="inline-block h-1/4 w-3/12 rounded-full "
-              src="https://rapidkings.com/wp-content/uploads/2023/05/17kohli1.jpg"
+              className="mt-10 inline-block h-1/3 w-1/4 rounded-full "
+              src={service.getProfileImagePreview(profile.profileImageID)}
               alt="Profile-image"
             />
           ) :

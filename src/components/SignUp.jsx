@@ -41,7 +41,7 @@ function SignUp() {
         
     }
 
-    //TODO: Create a seperate component for Input
+
 
     return (
         <section>

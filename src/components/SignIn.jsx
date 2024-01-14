@@ -21,7 +21,6 @@ function SignIn() {
   async function signIn(data){
     console.log(data);
 
-    //TODO: Complete the function
     const userData=await authService.login(data);
     console.log(userData);
     //*{$id:    ,userId:   }
