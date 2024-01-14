@@ -1,4 +1,4 @@
-import { useNavigate, } from "react-router-dom"
+import { Link, useNavigate, } from "react-router-dom"
 import TopIcon from "./TopIcon";
 import { Home, Mail, UserCircle2, LogOut } from 'lucide-react';
 import { useSelector, useDispatch } from "react-redux";
@@ -56,23 +56,21 @@ function LeftSideBar() {
           <div className="space-y-3 mb-10">
             {
               sideBarItems.map((item) => item.status === 'active' && (
-                <div
-                  key={item.title}
-                  className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:cursor-pointer"
-                  //TODO: Create a navigate to link when on click
-                  onClick={() => {
-                    navigate(item.link);
-                  }}
-                >
-                  {item.icon}
-                  <span className="mx-2 text-2xl font-medium ">{item.title}</span>
-                </div>
+                <Link to={`${item.link}`}>
+                  <div
+                    key={item.title}
+                    className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:cursor-pointer"
+
+                  >
+                    {item.icon}
+                    <span className="mx-2 text-2xl font-medium ">{item.title}</span>
+                  </div>
+                </Link>
               ))
             }
             <div
               key={'logout'}
               className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:cursor-pointer"
-              //TODO: Create a navigate to link when on click
               onClick={logoutHandler}
             >
               <LogOut className=" w-10 h-10 mr-4" />

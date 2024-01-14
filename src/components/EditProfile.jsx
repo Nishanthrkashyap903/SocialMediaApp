@@ -29,6 +29,8 @@ function EditProfile() {
     console.log(data)
     console.log(data.file[0]);
 
+    //TODO: Make sure that whenever we submit without image even then it should save 
+
     const file=await service.uploadPost(data.file[0])
 
     //*file: {$id: imageID,...} 
