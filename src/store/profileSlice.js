@@ -14,7 +14,7 @@ const profileSlice=createSlice({
     reducers:{
         addProfile:(state,action)=>{
             state.email=action.payload.email;
-            state.name=action.payload.name;
+            state.name=action.payload?.name || null;
             state.status=true
         },
         removeProfile:(state,action)=>{
@@ -24,13 +24,17 @@ const profileSlice=createSlice({
         },
         addProfileImage:(state,action)=>{
             state.profileImage=true;
-            state.profileImageID=action.payload.ProfileImageId;
+            state.profileImageID=action.payload?.ProfileImageId || null;
         },
         updateProfile:(state,action)=>{
-            state.name=action.payload.Name;
+            state.name=action.payload?.Name || null;
+        },
+        removeProfileImage:(state,action)=>{
+            state.profileImage=false;
+            state.profileImageID=null;
         }
     }
 })
 
-export const {addProfile,removeProfile,addProfileImage,updateProfile}=profileSlice.actions;
+export const {addProfile,removeProfile,addProfileImage,updateProfile,removeProfileImage}=profileSlice.actions;
 export default profileSlice.reducer;

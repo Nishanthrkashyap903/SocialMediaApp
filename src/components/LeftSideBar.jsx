@@ -59,7 +59,7 @@ function LeftSideBar() {
                 <Link to={`${item.link}`}>
                   <div
                     key={item.title}
-                    className="flex transform items-center rounded-lg px-3 py-2 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:cursor-pointer"
+                    className="flex transform items-center rounded-lg px-3 py-4 text-gray-600 transition-colors duration-300 hover:bg-gray-100 hover:text-gray-700 hover:cursor-pointer"
 
                   >
                     {item.icon}

@@ -1,27 +1,36 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import {addProfileImage, updateProfile} from '../store/profileSlice.js'
+import {addProfileImage, updateProfile, removeProfileImage} from '../store/profileSlice.js'
 import service from '../appwrite/config'
 
 function Profile({ className, ...props }) {
   const navigate = useNavigate();
   const authData=useSelector((state)=>state.auth);
   const dispatch=useDispatch();
+
   
   useEffect(()=>{
     async function fetchData (){
       const getDocuments=await service.getProfilePosts({name:"UserId",value:authData.userData.userId});
       console.log('leftSideBar:',getDocuments);
-      dispatch(addProfileImage(getDocuments.documents[0]))
-      dispatch(updateProfile(getDocuments.documents[0]));
+      if(getDocuments.total!==0)
+      {
+        dispatch(addProfileImage(getDocuments.documents[0]))
+        dispatch(updateProfile(getDocuments.documents[0]));
+      }
+      else{
+        console.log('remove Profile')
+        dispatch(removeProfileImage());
+      }
     } 
     
     fetchData();
   },[navigate])
 
   const profile = useSelector((state) => state.profile);
-  
+
+
   return (
     <div className={`${className} flex items-start justify-center`}>
       <div className="flex flex-col items-center space-x-2 w-3/4 h-3/4">
