@@ -3,7 +3,7 @@ import LeftSideBar from "../components/LeftSideBar"
 import { useEffect } from "react"
 import appWriteService from '../appwrite/auth';
 import { useDispatch } from "react-redux";
-import { addProfile,removeProfileImage ,addProfileImage } from "../store/profileSlice";
+import { addProfile,removeProfileImage ,addProfileImage, updateProfile } from "../store/profileSlice";
 import service from "../appwrite/config";
 
 function Home() {
@@ -14,10 +14,11 @@ function Home() {
   useEffect(() => {
     appWriteService.getUser().then((user) => {
       if (user) {
-        console.log("user in home",user);
+        // console.log("user in home",user);
         //* {name:  ,email: }
         dispatch(addProfile(user));
-        console.log('details in home',user.name,user.$id);
+        // console.log('details in home',user.name,user.$id);
+
         service.getProfilePosts({name: 'UserId' , value: user.$id})
         .then((getDocuments)=>{
           console.log('documents in home',getDocuments);
@@ -27,7 +28,14 @@ function Home() {
             dispatch(removeProfileImage())
           }
           else{
-            dispatch(addProfileImage(getDocuments.documents[0]))
+            if(getDocuments.documents[0].ProfileImageId) //if profileImage is  existing
+            {
+              dispatch(addProfileImage(getDocuments.documents[0]))
+            }
+            else{ // else 
+              dispatch(removeProfileImage());
+            }
+            dispatch(updateProfile(getDocuments.documents[0]))
           }
         })
       }

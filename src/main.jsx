@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import store from './store/store'
 import {AuthStatus,SignIn,SignUp} from './components/index'
 import EditProfile from "./components/EditProfile"
+import AllPosts from './pages/AllPosts';
 
 // AuthLayout make sure that once the user 
 
@@ -30,6 +31,10 @@ const router=createBrowserRouter([
     </AuthStatus>
     ),
     children:[
+      {
+        path: '/home',
+        element: <AllPosts />
+      },
       {
         path:'/home/post',
         element:<Post className='w-full'/>

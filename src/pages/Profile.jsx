@@ -16,7 +16,13 @@ function Profile({ className, ...props }) {
       console.log('leftSideBar:',getDocuments);
       if(getDocuments.total!==0)
       {
-        dispatch(addProfileImage(getDocuments.documents[0]))
+        if(getDocuments.documents[0].ProfileImageId)
+        {
+          dispatch(addProfileImage(getDocuments.documents[0]))
+        }
+        else{
+          dispatch(removeProfileImage());
+        }
         dispatch(updateProfile(getDocuments.documents[0]));
       }
       else{
