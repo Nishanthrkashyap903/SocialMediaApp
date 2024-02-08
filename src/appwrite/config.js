@@ -33,14 +33,16 @@ export class Service {
         }
     }
 
-    async createPost({UserId,Title,Content,PostImageID,Likes},) {
+    async createPost({UserId,Title,Content,PostImageID,Name}) {
+        console.log({UserId,Title,Content,PostImageID,Name})
         try {
-            await this.database.createDocument(conf.appWriteDatabaseId, conf.appWritePostsCollectionId, ID.unique(), {
+           
+            return await this.database.createDocument(conf.appWriteDatabaseId, conf.appWritePostsCollectionId, ID.unique(), {
                 UserId,
                 Title,
                 Content,
                 PostImageID,
-                Likes,
+                Name,
             })
         } catch (error) {
             console.log("Appwrite server :: createPost :: error", error);
@@ -62,6 +64,19 @@ export class Service {
         }
     }
 
+    async createLikedPost({UserId,ProfileImageId,Name,EmailId}){
+        try {
+            return await this.database.createDocument(conf.appWriteDatabaseId,
+                conf.appWritePostsLikedCollectionId, 
+                ID.unique(), {
+                PostId,
+                UserId,
+            })
+        } catch (error) {
+            console.log("Appwrite server :: createLikedPost :: error", error);
+        }
+    }
+
     async getProfilePosts({
         name,
         value,
@@ -72,6 +87,49 @@ export class Service {
                 )
         } catch (error) {
             console.log("Appwrite server :: getProfilePost :: error", error);
+            return false;
+        }
+    }
+
+    async getAllPosts(){
+        try {
+            return await this.database.listDocuments(conf.appWriteDatabaseId,
+                conf.appWritePostsCollectionId
+                )
+        } catch (error) {
+            console.log("Appwrite server :: getAllPost :: error", error);
+            return false;
+        }
+    }
+
+    async getPost(
+        documentId
+    ){
+        try {
+            return await this.database.getDocument(conf.appWriteDatabaseId,
+                conf.appWritePostsCollectionId, 
+                documentId
+                )
+        } catch (error) {
+            console.log("Appwrite server :: getPost :: error", error);
+            return false;
+        }
+    }
+
+    async updatePost(
+        documentId
+        ,like
+    ){
+        try {
+            return await this.database.updateDocument(conf.appWriteDatabaseId,
+                conf.appWritePostsCollectionId, 
+                documentId,
+                {
+                    Likes: like
+                }
+                )
+        } catch (error) {
+            console.log("Appwrite server :: updatePost :: error", error);
             return false;
         }
     }
@@ -88,6 +146,8 @@ export class Service {
         }
     }
 
+    //TODO: Create a function to update Liked Post
+    
     getProfileImagePreview(ProfileImageID){
         return this.storage.getFilePreview(conf.appWriteBucketId,ProfileImageID);
     }

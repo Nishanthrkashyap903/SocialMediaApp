@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { updateProfile } from '../store/profileSlice.js'
 import Loader from './Loader.jsx'
 
-function EditProfile() {
+function EditProfile({className}) {
 
   const userData = useSelector((state) => state.profile);
   const authUser = useSelector((state) => state.auth);
@@ -109,7 +109,7 @@ function EditProfile() {
 
   return !isLoading ? (
     <>
-      <form onSubmit={handleSubmit(submit)} className='w-2/3' >
+      <form onSubmit={handleSubmit(submit)} className={`${className}`} >
         <div className="flex items-start justify-center w-full">
           <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-3/4 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -134,8 +134,9 @@ function EditProfile() {
   )
     :
     (
-      <Loader />
+      <Loader className={`w-full h-full`}/>
     )
+
 
 }
 

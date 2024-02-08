@@ -39,7 +39,7 @@ function Profile({ className, ...props }) {
 
   return (
     <div className={`${className} flex items-start justify-center`}>
-      <div className="flex flex-col items-center space-x-2 w-3/4 h-3/4">
+      <div className="flex flex-col items-center space-x-2 w-3/4 h-[70%]">
         {
           profile.profileImage ? (
             <img

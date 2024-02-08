@@ -7,7 +7,7 @@ import { removeProfile } from "../store/profileSlice";
 import authService from "../appwrite/auth";
 import service from "../appwrite/config";
 
-function LeftSideBar() {
+function LeftSideBar({className}) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ function LeftSideBar() {
   }
 
   return (
-    <aside className="flex h-screen w-1/3 flex-col overflow-y-auto border-r bg-white px-5 py-8 m">
+    <aside className={`flex h-screen w-1/3 flex-col overflow-y-auto border-r bg-white px-5 py-8 m ${className}`}>
       <TopIcon />
       <div className="mt-10 flex flex-1 flex-col justify-between">
         <nav className="-mx-3 space-y-6 ">

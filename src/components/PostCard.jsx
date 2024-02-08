@@ -1,38 +1,90 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Heart } from 'lucide-react';
+import service from '../appwrite/config';
+import { debounce } from 'lodash';
 
-// TODO: Create a Post Card Component 
-function PostCard() {
+// TODO: Track Which posts are liked by which user
+function PostCard({id, title, content, Name, PostImageID, profileImageID,Likes }) {
+    const [clicked, setClicked] = useState(false);
+    const [likes,setLikes]=useState(Likes? Likes : 0);
+
+    async function addLike(){
+        setClicked(prevState => !prevState); 
+        
+        const post=await service.getPost(id);
+        
+        if(post)
+        {
+            const likes=post.Likes;
+            const update=await service.updatePost(id,likes+1);
+            if(update)
+            {
+                setLikes(likes+1);
+            }
+            
+        }
+    }
+    
+
+    async function removeLike(){
+        setClicked(prevState => !prevState); 
+        
+        const post=await service.getPost(id);
+        
+        if(post)
+        {
+            const likes=post.Likes;
+            const update=await service.updatePost(id,likes-1);
+            if(update)
+            {
+                setLikes(likes-1);
+            }
+            
+        }
+    }
+
     return (
         <>
-            <div class="min-h-screen bg-gray-100 flex justify-center items-center w-2/3">
-                <div class="max-w-xs container bg-white rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+            <div className="min-h-screen  bg-white flex justify-center items-center w-full">
+                <div className="max-w-md container bg-white rounded-xl shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
                     <div>
-                        <span class="text-white text-xs font-bold rounded-lg bg-green-500 inline-block mt-4 ml-4 py-1.5 px-4 cursor-pointer">Home</span>
-                        <h1 class="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">Lampara Look</h1>
-                        <p class="ml-4 mt-1 mb-2 text-gray-700 hover:underline cursor-pointer">#by Saca Tuerca</p>
+                        <h1 className="text-2xl mt-2 ml-4 font-bold text-gray-800 hover:underline cursor-pointer hover:text-gray-900 transition duration-100">{title}</h1>
+                        <p className="ml-4 mt-1 mb-2 text-gray-700 hover:underline cursor-pointer">{content}</p>
                     </div>
-                    <img class="w-full cursor-pointer" src="https://images.unsplash.com/photo-1525268771113-32d9e9021a97?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="" />
-                    <div class="flex p-4 justify-between">
-                        <div class="flex items-center space-x-2">
-                            <img class="w-10 rounded-full" src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg" alt="sara" />
-                            <h2 class="text-gray-800 font-bold cursor-pointer">Felipe Sacudon</h2>
+                    {PostImageID && <img className="w-full bg-contain cursor-pointer" src={service.getProfileImagePreview(PostImageID)} alt="" />}
+                    <div className="flex p-4 justify-around ">
+                        <div className="flex items-center w-1/2 h-16">
+                            {profileImageID && <img className="w-10 h-10 rounded-full" src={service.getProfileImagePreview(profileImageID)} alt="sara" />}
+
+                            {/* <div className='w-14 h-10 rounded-[50%] bg-blue-600'></div> */}
+                            <h2 className="text-gray-800 font-bold ml-16 cursor-pointer w-4/6 text-center">{Name}</h2>
                         </div>
-                        <div class="flex space-x-2">
-                            <div class="flex space-x-1 items-center">
+                        <div className="flex space-x-2">
+                            {/* <div className="flex space-x-1 items-center">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
                                 </span>
                                 <span>22</span>
-                            </div>
-                            <div class="flex space-x-1 items-center">
+                            </div> */}
+                            <div className="flex space-x-1 items-center">
                                 <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-red-500 hover:text-red-400 transition duration-100 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                                    </svg>
+
+                            
+                                    {clicked ?
+                                        //  Liked State
+                                        <svg onClick={debounce(removeLike,1000)} xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-500 hover:text-red-400 transition duration-100 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                        </svg> :
+
+                                        // Unliked State
+                                        <Heart onClick={debounce(addLike,1000)} className='text-red-500 cursor-pointer' strokeWidth={2} />
+                                    }
+
+
                                 </span>
-                                <span>20</span>
+                                <span>{likes}</span>
                             </div>
                         </div>
                     </div>
