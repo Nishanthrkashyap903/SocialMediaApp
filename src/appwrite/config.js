@@ -134,6 +134,7 @@ export class Service {
             value,
         }
     ){
+        console.log("value",value);
         try {
             return await this.database.listDocuments(conf.appWriteDatabaseId,
                 conf.appWritePostsLikedCollectionId, 
