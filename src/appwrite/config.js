@@ -26,9 +26,18 @@ export class Service {
 
     async deletePost(fileId) {
         try {
-            await this.storage.deleteFile(conf.appWriteBucketId, fileId);
+            return await this.storage.deleteFile(conf.appWriteBucketId, fileId);
         } catch (error) {
             console.log("Appwrite server :: deleteFile :: error", error);
+            return false;
+        }
+    }
+
+    async deleteLikedPost(likedId){
+        try {
+            return await this.database.deleteDocument(conf.appWriteDatabaseId, conf.appWritePostsLikedCollectionId, likedId);
+        } catch (error) {
+            console.log("Appwrite server :: deleteLikedFile :: error", error);
             return false;
         }
     }
@@ -64,7 +73,7 @@ export class Service {
         }
     }
 
-    async createLikedPost({UserId,ProfileImageId,Name,EmailId}){
+    async createLikedPost({PostId,UserId}){
         try {
             return await this.database.createDocument(conf.appWriteDatabaseId,
                 conf.appWritePostsLikedCollectionId, 
@@ -74,6 +83,7 @@ export class Service {
             })
         } catch (error) {
             console.log("Appwrite server :: createLikedPost :: error", error);
+            return false;
         }
     }
 
@@ -116,10 +126,30 @@ export class Service {
         }
     }
 
+    //TODO: Create a function to update Liked Post
+
+    async getLikedPost(
+        {
+            name,
+            value,
+        }
+    ){
+        try {
+            return await this.database.listDocuments(conf.appWriteDatabaseId,
+                conf.appWritePostsLikedCollectionId, 
+                [Query.equal(name,[value])]
+                )
+        } catch (error) {
+            console.log("Appwrite server :: getLikedPost :: error", error);
+            return false;
+        }
+    }
+
     async updatePost(
         documentId
         ,like
     ){
+        
         try {
             return await this.database.updateDocument(conf.appWriteDatabaseId,
                 conf.appWritePostsCollectionId, 
@@ -146,8 +176,6 @@ export class Service {
         }
     }
 
-    //TODO: Create a function to update Liked Post
-    
     getProfileImagePreview(ProfileImageID){
         return this.storage.getFilePreview(conf.appWriteBucketId,ProfileImageID);
     }

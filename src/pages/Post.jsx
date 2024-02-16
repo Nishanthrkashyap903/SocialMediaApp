@@ -27,7 +27,7 @@ function Post({ className, ...props }) {
     //* {$id:  , bucketId: }
     if(file){
       console.log(file.$id)
-      const dbPost=await service.createPost({UserId: userId ,Title: data.title,Content : data.content, PostImageID: file.$id, Name: userName})
+      const dbPost=await service.createPost({UserId: userId ,Title: data.title,Content : data.content, PostImageID: file.$id})
       console.log("Post",dbPost);
       if(dbPost)
       {
