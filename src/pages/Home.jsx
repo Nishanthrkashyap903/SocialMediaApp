@@ -8,11 +8,12 @@ import service from "../appwrite/config";
 
 function Home() {
 
-  const navigate = useNavigate()
-  // const toggleEdited=useSelector(state=>state.profile.toggleEdited);
+  // const navigate = useNavigate()
+  const fetchedPosts=useSelector(state=>state.fetched.toggleEdited);
 
   const dispatch = useDispatch();
   useEffect(() => {
+    console.log("Home fetched");
     appWriteService.getUser().then((user) => {
       if (user) {
         // console.log("user in home",user);
@@ -42,7 +43,7 @@ function Home() {
     })
 
 
-  }, [navigate]);
+  }, []);
 
   return (
     <>

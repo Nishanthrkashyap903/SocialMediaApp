@@ -3,10 +3,10 @@ import conf from "../conf/conf.js";
 
 export class Service {
 
-    client=new Client();;
+    client = new Client();;
     storage;
     database;
-    constructor() { 
+    constructor() {
         this.client
             .setEndpoint(conf.appWriteUrl)
             .setProject(conf.appWriteProjectId);
@@ -16,7 +16,7 @@ export class Service {
 
     async uploadPost(file) {
         try {
-            const result=await this.storage.createFile(conf.appWriteBucketId, ID.unique(), file);
+            const result = await this.storage.createFile(conf.appWriteBucketId, ID.unique(), file);
             return result;
         } catch (error) {
             console.log("Appwrite server :: uploadFile :: error", error);
@@ -33,7 +33,7 @@ export class Service {
         }
     }
 
-    async deleteLikedPost(likedId){
+    async deleteLikedPost(likedId) {
         try {
             return await this.database.deleteDocument(conf.appWriteDatabaseId, conf.appWritePostsLikedCollectionId, likedId);
         } catch (error) {
@@ -42,10 +42,10 @@ export class Service {
         }
     }
 
-    async createPost({UserId,Title,Content,PostImageID,Name}) {
-        console.log({UserId,Title,Content,PostImageID,Name})
+    async createPost({ UserId, Title, Content, PostImageID, Name }) {
+        console.log({ UserId, Title, Content, PostImageID, Name })
         try {
-           
+
             return await this.database.createDocument(conf.appWriteDatabaseId, conf.appWritePostsCollectionId, ID.unique(), {
                 UserId,
                 Title,
@@ -58,10 +58,10 @@ export class Service {
         }
     }
 
-    async createProfilePost({UserId,ProfileImageId,Name,EmailId}){
+    async createProfilePost({ UserId, ProfileImageId, Name, EmailId }) {
         try {
             return await this.database.createDocument(conf.appWriteDatabaseId,
-                conf.appWriteProfilePostsCollectionId, 
+                conf.appWriteProfilePostsCollectionId,
                 ID.unique(), {
                 UserId,
                 ProfileImageId,
@@ -73,10 +73,10 @@ export class Service {
         }
     }
 
-    async createLikedPost({PostId,UserId}){
+    async createLikedPost({ PostId, UserId }) {
         try {
             return await this.database.createDocument(conf.appWriteDatabaseId,
-                conf.appWritePostsLikedCollectionId, 
+                conf.appWritePostsLikedCollectionId,
                 ID.unique(), {
                 PostId,
                 UserId,
@@ -90,22 +90,26 @@ export class Service {
     async getProfilePosts({
         name,
         value,
-    }){
+    }) {
         try {
             return await this.database.listDocuments(conf.appWriteDatabaseId,
-                conf.appWriteProfilePostsCollectionId,[Query.equal(name,[value])]
-                )
+                conf.appWriteProfilePostsCollectionId, [Query.equal(name, [value])]
+            )
         } catch (error) {
             console.log("Appwrite server :: getProfilePost :: error", error);
             return false;
         }
     }
 
-    async getAllPosts(){
+    async getAllPosts(offset) {
         try {
             return await this.database.listDocuments(conf.appWriteDatabaseId,
-                conf.appWritePostsCollectionId
-                )
+                conf.appWritePostsCollectionId,
+                [
+                    Query.limit(2),
+                    Query.offset(offset+2)
+                ]
+            )
         } catch (error) {
             console.log("Appwrite server :: getAllPost :: error", error);
             return false;
@@ -114,12 +118,12 @@ export class Service {
 
     async getPost(
         documentId
-    ){
+    ) {
         try {
             return await this.database.getDocument(conf.appWriteDatabaseId,
-                conf.appWritePostsCollectionId, 
+                conf.appWritePostsCollectionId,
                 documentId
-                )
+            )
         } catch (error) {
             console.log("Appwrite server :: getPost :: error", error);
             return false;
@@ -133,13 +137,13 @@ export class Service {
             name,
             value,
         }
-    ){
-        
+    ) {
+
         try {
             return await this.database.listDocuments(conf.appWriteDatabaseId,
-                conf.appWritePostsLikedCollectionId, 
-                [Query.equal(name,[value])]
-                )
+                conf.appWritePostsLikedCollectionId,
+                [Query.equal(name, [value])]
+            )
         } catch (error) {
             console.log("Appwrite server :: getLikedPost :: error", error);
             return false;
@@ -148,37 +152,37 @@ export class Service {
 
     async updatePost(
         documentId
-        ,like
-    ){
-        
+        , like
+    ) {
+
         try {
             return await this.database.updateDocument(conf.appWriteDatabaseId,
-                conf.appWritePostsCollectionId, 
+                conf.appWritePostsCollectionId,
                 documentId,
                 {
                     Likes: like
                 }
-                )
+            )
         } catch (error) {
             console.log("Appwrite server :: updatePost :: error", error);
             return false;
         }
     }
 
-    async updateProfilePosts({documentId,ProfileImageId,Name}){
+    async updateProfilePosts({ documentId, ProfileImageId, Name }) {
         try {
-            return await this.database.updateDocument(conf.appWriteDatabaseId,conf.appWriteProfilePostsCollectionId,documentId,{
+            return await this.database.updateDocument(conf.appWriteDatabaseId, conf.appWriteProfilePostsCollectionId, documentId, {
                 ProfileImageId,
                 Name,
-            }) 
+            })
         } catch (error) {
             console.log("Appwrite server :: updateProfilePosts :: error", error);
             return false;
         }
     }
 
-    getProfileImagePreview(ProfileImageID){
-        return this.storage.getFilePreview(conf.appWriteBucketId,ProfileImageID);
+    getProfileImagePreview(ProfileImageID) {
+        return this.storage.getFilePreview(conf.appWriteBucketId, ProfileImageID);
     }
 }
 

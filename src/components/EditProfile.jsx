@@ -32,7 +32,6 @@ function EditProfile({className}) {
     console.log(data.file[0]);
 
     
-    
     setIsLoading(true);
     
     if (data.file[0]) {
