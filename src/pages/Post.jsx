@@ -47,7 +47,7 @@ function Post({ className, ...props }) {
       <form className='w-full h-full' onSubmit={handleSubmit(submit)}>
         <Input label="Title: " labelSize={`text-xl`} {...register("title",{required: true})} />
         <RTE label="Content: " control={control} className={`w-full h-2/4 flex flex-col items-center`} defaultValue={getValues("Content")} />
-        <Input label="Featured Image :"
+        <Input label="Post Image :"
           labelSize={`text-xl`}
           type="file"
           className="mb-4"
