@@ -155,7 +155,7 @@ function SignUp() {
                                     type="submit"
                                     className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                                 >
-                                    Create Account
+                                    Create an Account
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="16"
